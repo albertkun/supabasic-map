@@ -74,7 +74,7 @@ function zoomToMarker(id) {
 	map.flyTo({center: [position.lng, position.lat], zoom: 13});
 }
 fetchData();
-const MAPTILER_KEY = 'get_your_own_OpIi9ZULNHzrESv6T2vL';
+const MAPTILER_KEY = 'z37jJYOIqWw3eBn8jUWN';
 const map = new maplibregl.Map({
     style: `https://api.maptiler.com/maps/basic-v2/style.json?key=${MAPTILER_KEY}`,
     center: [-118.25133692966446, 34.00095151499077],
