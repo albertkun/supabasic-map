@@ -16,7 +16,7 @@ async function fetchData() {
 	}
 }
 
-function updatePanel(item) {
+function updatePanel(item, removeId = null) {
 	// Get the 'View' tab
 	let viewTab = document.getElementById('View');
 
@@ -26,6 +26,11 @@ function updatePanel(item) {
 		table = document.createElement('table');
 		viewTab.appendChild(table);
 
+		if (removeId) {
+			// Remove the row for the marker with removeId
+			let row = table.querySelector(`tr[data-id="${removeId}"]`);
+			if (row) row.remove();
+		} else {
 		// Add table headers
 		let thead = document.createElement('thead');
 		thead.innerHTML = `
@@ -36,6 +41,7 @@ function updatePanel(item) {
 			</tr>
 		`;
 		table.appendChild(thead);
+		}
 	}
 
 	// Create a new row for this item
@@ -207,10 +213,11 @@ async function deleteMarker(id) {
         .from('test')
         .delete()
         .eq('id', id);
-
+	updatePanel(null, id);
     if (error) {
         console.error('Error deleting data: ', error);
     }
+	
 }
 function subscribeToTableChanges() {
 	const subscription = supabase
@@ -233,6 +240,7 @@ function subscribeToTableChanges() {
 							popupContent.querySelector('.edit-marker').dataset.id = payload.new.id;
 							popupContent.querySelector('.delete-marker').dataset.id = payload.new.id;
 						}
+						updatePanel(payload.new);
 						break;
 					case 'DELETE':
 						const deletedMarker = markers[payload.old.id];
@@ -240,6 +248,7 @@ function subscribeToTableChanges() {
 							deletedMarker.remove();
 							delete markers[payload.old.id];
 						}
+						updatePanel(null, payload.old.id);
 						break;
 				}
 			}
