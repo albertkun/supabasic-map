@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Simple Map</title>
+	<style>
+		body { margin: 0; padding: 0; font-family: 'OpenSans', sans-serif;}
+
+		#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+		#panel {
+			position: absolute;
+			top: 10px;
+			left: 10px;
+			background: white;
+			padding: 10px;
+			border-radius: 5px;
+			transition: left 0.5s ease-in-out; /* Add this line */
+		}
+		.tabcontent {
+			display: none;
+		}
+		.tablinks {
+			background-color: #f2f2f2;
+			color: #444;
+			padding: 10px 15px;
+			border: none;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+			margin-right: 5px;
+			border-radius: 5px;
+		}
+
+		.tablinks:hover {
+			background-color: #ddd;
+		}
+
+		.tablinks.active {
+			background-color: #4CAF50;
+			color: white;
+		}
+		#View {
+			background-color: #f2f2f2;
+			padding: 20px;
+			border-radius: 5px;
+			width: 300px;
+			margin: 0 auto;
+		}
+	
+		#View div {
+			margin-bottom: 10px;
+		}
+		#panel.hidden {
+			left: -300px;
+		}
+		#View div:last-child {
+			margin-bottom: 0;
+		}
+	
+		#View div h3 {
+			font-size: 18px;
+			margin-bottom: 5px;
+		}
+	
+		#View div p {
+			font-size: 14px;
+			color: #666;
+		}
+	
+		#View div button {
+			padding: 5px 10px;
+			border: none;
+			border-radius: 3px;
+			color: #fff;
+			cursor: pointer;
+		}
+	
+		#View div .edit-marker {
+			background-color: #4CAF50;
+			margin-right: 5px;
+		}
+	
+		#View div .delete-marker {
+			background-color: #f44336;
+		}
+	</style>
+	<link href="https://fonts.googleapis.com/css2?family=OpenSans:wght@400;700&display=swap" rel="stylesheet">
+	<link href="https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+	<div id="map"></div>
+	<div id="panel">
+		<div id="tabs">
+			<button class="tablinks active" onclick="openTab(event, 'View')">View</button>
+			<button class="tablinks" onclick="openTab(event, 'Edit')">Edit</button>
+		</div>
+		<div id="View" class="tabcontent">
+			<!-- Add your table here -->
+		</div>
+		<div id="Edit" class="tabcontent" style="display: none;">
+			<h2>Add a new place</h2>
+			<form id="add-place">
+				<label for="name">Name:</label><br>
+				<input type="text" id="name" name="name"><br>
+				<label for="details">Details:</label><br>
+				<textarea id="details" name="details"></textarea><br>
+				<label for="longitude">Longitude:</label><br>
+				<input type="text" id="longitude" name="longitude"><br>
+				<label for="latitude">Latitude:</label><br>
+				<input type="text" id="latitude" name="latitude"><br>
+				<input type="submit" value="Add Place">
+			</form>
+		</div>
+	</div>
+	<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+	<script src="https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.js"></script>
+	<script src="init.js" type="module"></script>
+	<button id="geolocate">Geolocate User</button>
+	<button onclick="togglePanel()">Toggle Panel</button>
+	<script>
+		function openTab(evt, tabName) {
+			let i, tabcontent, tablinks;
+			tabcontent = document.getElementsByClassName("tabcontent");
+			for (i = 0; i < tabcontent.length; i++) {
+				tabcontent[i].style.display = "none";
+			}
+			tablinks = document.getElementsByClassName("tablinks");
+			for (i = 0; i < tablinks.length; i++) {
+				tablinks[i].className = tablinks[i].className.replace(" active", "");
+			}
+			document.getElementById(tabName).style.display = "block";
+			evt.currentTarget.className += " active";
+		}
+
+		function togglePanel() {
+			var panel = document.getElementById('panel');
+			panel.classList.toggle('hidden');
+		}
+	</script>
+</body>
+</html>
