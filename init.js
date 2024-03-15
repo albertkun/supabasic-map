@@ -206,8 +206,9 @@ function addMarker(item) {
 		.addTo(map);
 
 	markers[item.id] = marker;
-	// Fetch and display the data
+	updatePanel(item);
 }
+
 async function deleteMarker(id) {
     const { error } = await supabase
         .from('test')
